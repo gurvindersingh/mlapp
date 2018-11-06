@@ -21,7 +21,7 @@ import model
 from logger import setup_logging
 
 # Application Version
-VERSION='0.0.1'
+VERSION='0.1'
 
 with open('config.json', 'r') as conffile:
     config = json.load(conffile)
