@@ -45,7 +45,6 @@ six==1.11.0
 spacy==2.0.16
 thinc==6.12.0
 toolz==0.9.0
-torch-nightly==1.0.0.dev20181103
 torchvision-nightly==0.2.1
 tqdm==4.28.1
 typing==3.6.6
