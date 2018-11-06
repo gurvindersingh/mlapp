@@ -1,7 +1,5 @@
 {
-    "model_dir": "models",
     "model_name": "mlappv1",
-    "loglevel": "DEBUG",
     "token": "",
     "mlappv1": {
         "arch": "resnet34",

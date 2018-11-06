@@ -1,9 +1,10 @@
 import logging.config
 import sys
+import os
 
 FORMAT = "[%(asctime)s] [PID %(process)d] [%(threadName)s] [%(request_id)s] [%(name)s] [%(levelname)s] %(message)s"  # noqa
 
-def setup_logging(level):
+def setup_logging():
     logging.config.dictConfig({
         "disable_existing_loggers": False,
         "version": 1,
@@ -19,7 +20,7 @@ def setup_logging(level):
         },
         "handlers": {
             "default": {
-                "level": level,
+                "level": os.getenv("LOGLEVEL", "INFO"),
                 "class": "logging.StreamHandler",
                 "stream": sys.stderr,
                 "formatter": "console",
@@ -29,7 +30,7 @@ def setup_logging(level):
         "loggers": {
             "": {
                 "handlers": ["default"],
-                "level": level,
+                "level": os.getenv("LOGLEVEL", "INFO"),
                 "propagate": False,
             },
         }

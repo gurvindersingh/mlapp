@@ -27,7 +27,7 @@ class ModelData():
 
 def load(config):
 
-    path = Path(config['model_dir'])
+    path = Path('.')
     model = config['model_name']
     init_data = ImageDataBunch.single_from_classes(
                                     path, config[model]['classes'], tfms=get_transforms(),
@@ -36,9 +36,9 @@ def load(config):
     global learn
     global classes
     classes = config[model]['classes']
-    logging.info(f"Loading model: {config['model_name']}, architecture: {config[model]['arch']}, file: {path/config[model]['modelfile']}")
+    logging.info(f"Loading model: {config['model_name']}, architecture: {config[model]['arch']}, file: models/{config[model]['modelfile']}")
     learn = create_cnn(init_data, eval(f"models.{config[model]['arch']}"))
-    learn.model.load_state_dict(torch.load(path/config[model]['modelfile'], map_location='cpu'))
+    learn.model.load_state_dict(torch.load(f"models/{config[model]['modelfile']}", map_location='cpu'))
 
 def predict(data):
     if data is None or data.file is None:

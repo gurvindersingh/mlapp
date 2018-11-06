@@ -49,7 +49,7 @@ get_schema = OpenAPIHandler(
 # Initialize objects
 start_time = time.time()
 get_docs = OpenAPIUIHandler()
-setup_logging(config['loglevel'])
+setup_logging()
 
 # Annotate these objects to be accessible without authentication
 get_schema = annotate(no_auth=True)(get_schema)
@@ -75,7 +75,7 @@ def predict(data: ModelData) -> str:
 
 # Load our pre trained model
 model.load(config)
-logging.info(f"Loaded model: {config['model_name']}, from: {config['model_dir']} directory")
+logging.info(f"Loaded model: {config['model_name']}")
 
 # Setup the list of middlewares to be enabled
 middlewares = [prometheus_middleware, RequestIdMiddleware(), ResponseRendererMiddleware()]
