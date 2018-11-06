@@ -1,9 +1,0 @@
-[common]
-environment = ""
-conn_pool_size = 32
-
-[dev]
-environment = "dev"
-
-[prod]
-environment = "prod"

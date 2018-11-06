@@ -1,0 +1,12 @@
+{
+    "model_dir": "models",
+    "model_name": "mlappv1",
+    "loglevel": "DEBUG",
+    "token": "",
+    "mlappv1": {
+        "arch": "resnet34",
+        "size": 224,
+        "classes": ["floeberg", "floeice", "icefloe", "iceridge", "levelice"],
+        "modelfile": "mlappv1.pth"
+    }
+}
