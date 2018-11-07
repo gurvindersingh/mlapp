@@ -9,7 +9,7 @@ cymem==2.0.2
 cytoolz==0.9.0.1
 dataclasses==0.6
 dill==0.2.8.2
-fastai==1.0.19
+fastai==1.0.20
 fastprogress==0.1.15
 Flask==1.0.2
 gevent==1.3.7

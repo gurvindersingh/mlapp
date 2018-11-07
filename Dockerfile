@@ -13,4 +13,4 @@ COPY --chown=65534 models models
 RUN mkdir -m 777 /nonexistent
 USER nobody
 ENTRYPOINT [ "gunicorn", "app:app", "--access-logfile", "-", "--error-logfile", "-" ]
-CMD [ "-t", "60", "--workers", "1", "--threads", "2", "-b", "0.0.0.0" ]
+CMD [ "-k", "gevent",  "-t", "60", "--workers", "1", "-b", "0.0.0.0" ]
