@@ -9,7 +9,7 @@ RUN apt update && apt install -y gcc && \
     apt autoremove -y gcc && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY *.py config.json /app/
-COPY models models
+COPY --chown=65534 models models
 RUN mkdir -m 777 /nonexistent
 USER nobody
 ENTRYPOINT [ "gunicorn", "app:app", "--access-logfile", "-", "--error-logfile", "-" ]
