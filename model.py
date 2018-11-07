@@ -4,8 +4,11 @@ from io import BytesIO
 import logging
 from pathlib import Path
 import PIL
+import sys
 import torch
 from urllib.parse import unquote
+import urllib.request
+from urllib.error import HTTPError
 
 from molten import schema, UploadedFile
 from molten.validation import Field
@@ -29,6 +32,16 @@ def load(config):
 
     path = Path('.')
     model = config['model_name']
+    # Check if we need to download Model file
+    if config['model_url'] != "":
+        try:
+            logging.info(f"Downloading model file from: {config['model_url']}")
+            urllib.request.urlretrieve(config['model_url'], f"models/{config[model]['modelfile']}")
+            logging.info(f"Downloaded model file and stored at path: models/{config[model]['modelfile']}")
+        except HTTPError as e:
+            logging.critical(f"Failed in downloading file from: {config['model_url']}, Exception: '{e}'")
+            sys.exit(4)
+
     init_data = ImageDataBunch.single_from_classes(
                                     path, config[model]['classes'], tfms=get_transforms(),
                                     size=config[model]['size']
