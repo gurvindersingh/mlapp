@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlapp
+  labels:
+    app: mlapp
+data:
+  config.json: |
+    {
+      "model_name": "mlappv1",
+      "model_url": "",
+      "token": "",
+      "mlappv1": {
+          "arch": "resnet34",
+          "size": 224,
+          "classes": ["german_shorthaired", "British_Shorthair", "newfoundland", "pomeranian", "beagle", "american_bulldog", "Persian", "Egyptian_Mau", "chihuahua", "staffordshire_bull_terrier", "saint_bernard", "samoyed", "Abyssinian", "Siamese", "keeshond", "Russian_Blue", "wheaten_terrier", "Sphynx", "basset_hound", "Bombay", "boxer", "japanese_chin", "scottish_terrier", "american_pit_bull_terrier", "yorkshire_terrier", "miniature_pinscher", "leonberger", "english_cocker_spaniel", "havanese", "Bengal", "shiba_inu", "Birman", "Maine_Coon", "Ragdoll", "pug", "great_pyrenees", "english_setter"],
+          "modelfile": "mlappv1.pth"
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlapp
+  labels:
+    app: mlapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+        app: mlapp
+  template:
+    metadata:
+      labels:
+        app: mlapp
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - name: mlapp
+        image: gurvin/mlapp:0.1
+        command: [ "gunicorn", "app:app", "--error-logfile", "-" ]
+        args: [ "-t", "60", "--workers", "3", "-k", "gthread", "--threads", "3", "-b", "0.0.0.0" ]
+        resources:
+          limits:
+            cpu: "4"
+            memory: 2G
+          requests:
+            cpu: "4"
+            memory: 2G
+        securityContext:
+          runAsUser: 65534
+        ports:
+          - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        volumeMounts:
+          - name: config
+            mountPath:  /app/config.json
+            subPath: config.json
+      volumes:
+        - name: config
+          configMap:
+            name: mlapp
+            items:
+            - key: config.json
+              path: config.json
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlapp
+  labels:
+    app: mlapp
+spec:
+  type: NodePort # Change ME based on your cluster
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: mlapp
+  selector:
+    app: mlapp
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mlapp
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mlapp
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
