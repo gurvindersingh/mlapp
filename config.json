@@ -1,11 +1,11 @@
 {
-    "model_name": "mlappv1",
-    "model_url": "",
+    "model_name": "v1",
     "token": "",
-    "mlappv1": {
+    "v1": {
+        "url": "",
         "arch": "resnet34",
         "size": 224,
         "classes": ["german_shorthaired", "British_Shorthair", "newfoundland", "pomeranian", "beagle", "american_bulldog", "Persian", "Egyptian_Mau", "chihuahua", "staffordshire_bull_terrier", "saint_bernard", "samoyed", "Abyssinian", "Siamese", "keeshond", "Russian_Blue", "wheaten_terrier", "Sphynx", "basset_hound", "Bombay", "boxer", "japanese_chin", "scottish_terrier", "american_pit_bull_terrier", "yorkshire_terrier", "miniature_pinscher", "leonberger", "english_cocker_spaniel", "havanese", "Bengal", "shiba_inu", "Birman", "Maine_Coon", "Ragdoll", "pug", "great_pyrenees", "english_setter"],
-        "modelfile": "mlappv1.pth"
+        "modelfile": "v1.pth"
     }
 }

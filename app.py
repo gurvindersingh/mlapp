@@ -16,7 +16,7 @@ from molten.openapi import OpenAPIHandler, OpenAPIUIHandler, Metadata, HTTPSecur
 from molten.contrib.prometheus import expose_metrics, prometheus_middleware
 from molten.contrib.request_id import RequestIdMiddleware
 
-from model import ModelData
+from model import ModelData, FeedbackData
 import model
 from logger import setup_logging
 
@@ -70,8 +70,25 @@ def predict(data: ModelData) -> str:
     Pass the request data as ModelData object,
     as this can be customised in the model.py file to adapt based
     on deployed model to make predictions
+
+    Parameters:
+      data: Parse the request body data based on your model schema and
+        pass this to predict method to make prediction
     """
     return model.predict(data)
+
+
+def feedback(data: FeedbackData) -> str:
+    """
+    Pass the request data as FeedbackData object,
+    as this can be customised in the model.py file to adapt based
+    on deployed model to make predictions
+
+    Parameters:
+      data: Parse the request body data based on your model schema and
+        pass this to predict method to make prediction
+    """
+    return model.feedback(data)
 
 # Load our pre trained model
 model.load(config)
@@ -92,9 +109,10 @@ app = App(
     routes=[
         Route("/_docs", get_docs),
         Route("/_schema", get_schema),
+        Route("/metrics", expose_metrics),
         Route("/", health),
         Route("/predict", predict, method="POST"),
-        Route("/metrics", expose_metrics),
+        Route("/feedback", feedback, method="POST"),
     ],
     parsers=[
         JSONParser(),
