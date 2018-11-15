@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlapp-loadtest
+  labels:
+    app: mlapp-loadtest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        app: mlapp-loadtest
+  template:
+    metadata:
+      labels:
+        app: mlapp-loadtest
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - name: mlapp-loadtest
+        image: gurvin/mlapp-loadtest:0.1
+        env:
+        - name: INDEX
+          value: ""
+        args:
+        - --host=http://mlapp.default.ioudaas.no
+        resources:
+          limits:
+            cpu: "8"
+            memory: 4G
+          requests:
+            cpu: "8"
+            memory: 4G
+        securityContext:
+          runAsUser: 65534
+        ports:
+          - containerPort: 8089
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8089
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8089
