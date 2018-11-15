@@ -44,11 +44,11 @@ spec:
         args: [ "-t", "60", "--workers", "3", "-k", "gthread", "--threads", "3", "-b", "0.0.0.0" ]
         resources:
           limits:
-            cpu: "4"
-            memory: 2G
+            cpu: "2"
+            memory: 1G
           requests:
-            cpu: "4"
-            memory: 2G
+            cpu: "2"
+            memory: 1G
         securityContext:
           runAsUser: 65534
         ports:
@@ -85,7 +85,7 @@ metadata:
   labels:
     app: mlapp
 spec:
-  type: NodePort # Change ME based on your cluster
+  type: ClusterIP # Change ME based on your cluster
   ports:
   - port: 80
     targetPort: 8000
@@ -105,5 +105,20 @@ spec:
     kind: Deployment
     name: mlapp
   minReplicas: 2
-  maxReplicas: 10
+  maxReplicas: 20
   targetCPUUtilizationPercentage: 50
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mlapp
+spec:
+  rules:
+  - host: mlapp.example.com # Change this based on your cluster
+    http:
+      paths:
+      - backend:
+          serviceName: mlapp
+          servicePort: 80
+        path: /
