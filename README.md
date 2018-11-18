@@ -21,12 +21,12 @@ So that I can focus on my ML model improvment and don't need to bother about how
 Application design is very simple. `app.py` sets up the route and required methods to get data in and out. `app.py` validates data according to schema descibed in `model.py` file using Molten framework. This application provides a simple CNN model which was described in Lesson 1 of [Fast v1](https://github.com/fastai/fastai/) course.
 
 ```
-/ -> Returns health information and serve as liveness check for application
-/_docs -> Serves Swagger UI to provide API docs and user friendly API testing
-/_schema -> json formatted API spec in OpenAPI standard
-/metrics -> Endpoint to scrape metrics by Prometheus
-/v1alpha1/predict -> Receives end user data to make prediction on
-/v1alpha1/feedback -> User can provide feedback on prediction if there was any errors
+/                   -> Returns health information and serve as liveness check for application
+/_docs              -> Serves Swagger UI to provide API docs and user friendly API testing
+/_schema            -> json formatted API spec in OpenAPI standard
+/metrics            -> Endpoint to scrape metrics by Prometheus
+/v1alpha1/predict   -> Receives end user data to make prediction on
+/v1alpha1/feedback  -> User can provide feedback on prediction if there was any errors
 ```
 
 versions + model schema + config
