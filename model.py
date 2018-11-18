@@ -57,8 +57,8 @@ def load():
     if CONFIG[model]['url'] != "":
         try:
             logging.info(f"Downloading model file from: {CONFIG[model]['url']}")
-            urllib.request.urlretrieve(CONFIG[model]['url'], f"models/{CONFIG[model]['modelfile']}")
-            logging.info(f"Downloaded model file and stored at path: models/{CONFIG[model]['modelfile']}")
+            urllib.request.urlretrieve(CONFIG[model]['url'], f"models/{model}.pth")
+            logging.info(f"Downloaded model file and stored at path: models/{model}.pth")
         except HTTPError as e:
             logging.critical(f"Failed in downloading file from: {CONFIG[model]['url']}, Exception: '{e}'")
             sys.exit(4)
@@ -68,9 +68,9 @@ def load():
                                     size=CONFIG[model]['size']
                                 ).normalize(imagenet_stats)
     classes = CONFIG[model]['classes']
-    logging.info(f"Loading model: {CONFIG['model_name']}, architecture: {CONFIG[model]['arch']}, file: models/{CONFIG[model]['modelfile']}")
+    logging.info(f"Loading model: {CONFIG['model_name']}, architecture: {CONFIG[model]['arch']}, file: models/{model}.pth")
     learn = create_cnn(init_data, eval(f"models.{CONFIG[model]['arch']}"))
-    learn.model.load_state_dict(torch.load(f"models/{CONFIG[model]['modelfile']}", map_location='cpu'))
+    learn.load(model, device=CONFIG[model]['device'])
 
     # Create direcotry to get feedback for this model
     Path.mkdir(Path(path_to(FEEDBACK_DIR, model)), parents=True, exist_ok=True)
