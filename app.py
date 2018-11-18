@@ -19,12 +19,10 @@ from molten.contrib.request_id import RequestIdMiddleware
 from model import ModelData, FeedbackData
 import model
 from logger import setup_logging
+from config import CONFIG
 
 # Application Version
 VERSION='0.1'
-
-with open('config.json', 'r') as conffile:
-    config = json.load(conffile)
 
 def auth_middleware(handler):
     """
@@ -32,7 +30,7 @@ def auth_middleware(handler):
     Bearer token header
     """
     def middleware(authorization: Optional[Header]):
-        if authorization and authorization[len("Bearer "):] == config['token'] or getattr(handler, "no_auth", False):
+        if authorization and authorization[len("Bearer "):] == CONFIG['token'] or getattr(handler, "no_auth", False):
             return handler()
         raise HTTPError(HTTP_401, {"error": "bad credentials"})
     return middleware
@@ -91,14 +89,14 @@ def feedback(data: FeedbackData) -> str:
     return model.feedback(data)
 
 # Load our pre trained model
-model.load(config)
-logging.info(f"Loaded model: {config['model_name']}")
+model.load()
+logging.info(f"Loaded model: {CONFIG['model_name']}")
 
 # Setup the list of middlewares to be enabled
 middlewares = [prometheus_middleware, RequestIdMiddleware(), ResponseRendererMiddleware()]
 
 # If token is not empty setup the authentication middleware as well openAPI config
-if config['token'] != "":
+if CONFIG['token'] != "":
     middlewares.append(auth_middleware)
     get_schema.security_schemes = [HTTPSecurityScheme("Bearer Auth", "bearer")]
     get_schema.default_security_scheme="Bearer Auth"

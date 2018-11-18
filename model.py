@@ -27,6 +27,8 @@ from fastai.vision import (
     pil2tensor
 )
 
+from config import CONFIG
+
 @schema
 class ModelData():
     file: UploadedFile
@@ -35,40 +37,40 @@ class ModelData():
 @schema
 class FeedbackData():
     file: UploadedFile
-    predicted: str
-    expected: str
+    predicted: str = Field(choices=CONFIG[CONFIG['model_name']]['classes'])
+    expected: str = Field(choices=CONFIG[CONFIG['model_name']]['classes'])
 
 FEEDBACK_DIR = 'feedback'
-SEP = '__'
+FEEDBACK_SEP = '__'
 
 def path_to(*segments):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *segments)
 
-def load(config):
+def load():
 
     path = Path('.')
     global model
     global learn
     global classes
-    model = config['model_name']
+    model = CONFIG['model_name']
     # Check if we need to download Model file
-    if config[model]['url'] != "":
+    if CONFIG[model]['url'] != "":
         try:
-            logging.info(f"Downloading model file from: {config[model]['url']}")
-            urllib.request.urlretrieve(config[model]['url'], f"models/{config[model]['modelfile']}")
-            logging.info(f"Downloaded model file and stored at path: models/{config[model]['modelfile']}")
+            logging.info(f"Downloading model file from: {CONFIG[model]['url']}")
+            urllib.request.urlretrieve(CONFIG[model]['url'], f"models/{CONFIG[model]['modelfile']}")
+            logging.info(f"Downloaded model file and stored at path: models/{CONFIG[model]['modelfile']}")
         except HTTPError as e:
-            logging.critical(f"Failed in downloading file from: {config[model]['url']}, Exception: '{e}'")
+            logging.critical(f"Failed in downloading file from: {CONFIG[model]['url']}, Exception: '{e}'")
             sys.exit(4)
 
     init_data = ImageDataBunch.single_from_classes(
-                                    path, config[model]['classes'], tfms=get_transforms(),
-                                    size=config[model]['size']
+                                    path, CONFIG[model]['classes'], tfms=get_transforms(),
+                                    size=CONFIG[model]['size']
                                 ).normalize(imagenet_stats)
-    classes = config[model]['classes']
-    logging.info(f"Loading model: {config['model_name']}, architecture: {config[model]['arch']}, file: models/{config[model]['modelfile']}")
-    learn = create_cnn(init_data, eval(f"models.{config[model]['arch']}"))
-    learn.model.load_state_dict(torch.load(f"models/{config[model]['modelfile']}", map_location='cpu'))
+    classes = CONFIG[model]['classes']
+    logging.info(f"Loading model: {CONFIG['model_name']}, architecture: {CONFIG[model]['arch']}, file: models/{CONFIG[model]['modelfile']}")
+    learn = create_cnn(init_data, eval(f"models.{CONFIG[model]['arch']}"))
+    learn.model.load_state_dict(torch.load(f"models/{CONFIG[model]['modelfile']}", map_location='cpu'))
 
     # Create direcotry to get feedback for this model
     Path.mkdir(Path(path_to(FEEDBACK_DIR, model)), parents=True, exist_ok=True)
@@ -88,5 +90,5 @@ def feedback(data):
     if data is None or data.file is None:
         return ''
     _, ext = os.path.splitext(data.file.filename)
-    data.file.save(path_to(FEEDBACK_DIR, model, data.predicted+SEP+data.expected+ext))
+    data.file.save(path_to(FEEDBACK_DIR, model, data.predicted+FEEDBACK_SEP+data.expected+ext))
     return {"success": True}
