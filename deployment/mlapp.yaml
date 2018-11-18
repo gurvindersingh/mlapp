@@ -4,7 +4,6 @@ metadata:
   name: mlapp
   labels:
     app: mlapp
-    version: "0.1"
 data:
   config.json: |
     {
