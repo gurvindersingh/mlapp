@@ -4,6 +4,7 @@ metadata:
   name: mlapp
   labels:
     app: mlapp
+    version: "0.1"
 data:
   config.json: |
     {
@@ -25,15 +26,18 @@ metadata:
   name: mlapp
   labels:
     app: mlapp
+    version: "0.1"
 spec:
   replicas: 2
   selector:
     matchLabels:
         app: mlapp
+        version: "0.1"
   template:
     metadata:
       labels:
         app: mlapp
+        version: "0.1"
     spec:
       securityContext:
         runAsNonRoot: true
@@ -84,6 +88,7 @@ metadata:
   name: mlapp
   labels:
     app: mlapp
+    version: "0.1"
 spec:
   type: ClusterIP # Change ME based on your cluster
   ports:
@@ -93,6 +98,7 @@ spec:
     name: mlapp
   selector:
     app: mlapp
+    version: "0.1"
 
 ---
 apiVersion: autoscaling/v1
