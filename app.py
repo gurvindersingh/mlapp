@@ -22,7 +22,7 @@ from logger import setup_logging
 from config import CONFIG
 
 # Application Version
-VERSION='0.1'
+VERSION='v0.1'
 
 def auth_middleware(handler):
     """
@@ -109,8 +109,8 @@ app = App(
         Route("/_schema", get_schema),
         Route("/metrics", expose_metrics),
         Route("/", health),
-        Route("/predict", predict, method="POST"),
-        Route("/feedback", feedback, method="POST"),
+        Route("/v1alpha1/predict", predict, method="POST"),
+        Route("/v1alpha1/feedback", feedback, method="POST"),
     ],
     parsers=[
         JSONParser(),
