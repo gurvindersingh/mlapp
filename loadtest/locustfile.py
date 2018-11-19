@@ -6,7 +6,7 @@ def index(l):
 
 def predict(l):
     img = open('keeshond.jpg', 'rb')
-    l.client.post("/v1alpha1/predict", files={'file': img})
+    l.client.post("/v1/predict", files={'file': img})
 
 class UserBehavior(TaskSet):
     if os.getenv("INDEX", "") == "run":

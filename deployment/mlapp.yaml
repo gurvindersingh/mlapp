@@ -25,36 +25,41 @@ metadata:
   name: mlapp
   labels:
     app: mlapp
-    api: v1alpha1
-    version: v0.1
+    api: v1
+    version: v0.1.0
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
         app: mlapp
-        api: v1alpha1
-        version: v0.1
+        api: v1
+        version: v0.1.0
   template:
     metadata:
       labels:
         app: mlapp
-        api: v1alpha1
-        version: v0.1
+        api: v1
+        version: v0.1.0
     spec:
       securityContext:
         runAsNonRoot: true
       containers:
       - name: mlapp
-        image: gurvin/mlapp:0.1
+        image: gurvin/mlapp:v0.1.0
         command: [ "gunicorn", "app:app", "--error-logfile", "-" ]
-        args: [ "-t", "60", "--workers", "3", "-k", "gthread", "--threads", "3", "-b", "0.0.0.0" ]
+        args: [ "-t", "60", "--workers", "1", "-k", "gthread", "--threads", "1", "-b", "0.0.0.0" ]
+        env:
+        - name: LOGLEVEL
+          value: INFO
         resources:
           limits:
             cpu: "2"
-            memory: 1G
+            memory: 2G
+            #nvidia.com/gpu: "1"
           requests:
             cpu: "2"
-            memory: 1G
+            memory: 2G
+            #nvidia.com/gpu: "1"
         securityContext:
           runAsUser: 65534
         ports:
@@ -90,8 +95,8 @@ metadata:
   name: mlapp
   labels:
     app: mlapp
-    api: v1alpha1
-    version: v0.1
+    api: v1
+    version: v0.1.0
 spec:
   type: ClusterIP # Change ME based on your cluster
   ports:
@@ -101,8 +106,8 @@ spec:
     name: mlapp
   selector:
     app: mlapp
-    api: v1alpha1
-    version: v0.1
+    api: v1
+    version: v0.1.0
 
 ---
 apiVersion: autoscaling/v1
@@ -114,7 +119,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: mlapp
-  minReplicas: 2
+  minReplicas: 1
   maxReplicas: 20
   targetCPUUtilizationPercentage: 50
 

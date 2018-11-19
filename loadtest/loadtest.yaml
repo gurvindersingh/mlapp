@@ -18,12 +18,12 @@ spec:
         runAsNonRoot: true
       containers:
       - name: mlapp-loadtest
-        image: gurvin/mlapp-loadtest:0.1
+        image: gurvin/mlapp-loadtest:v0.1.0
         env:
         - name: INDEX
           value: ""
         args:
-        - --host=http://mlapp.default.ioudaas.no
+        - --host=http://mlapp.example.com
         resources:
           limits:
             cpu: "8"

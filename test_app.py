@@ -8,7 +8,7 @@ client = testing.TestClient(app)
 def test_index_returns_200():
     resp = client.get(app.reverse_uri("health"))
     assert resp.status_code == 200
-    assert resp.json()['version'] == 'v0.1'
+    assert resp.json()['version'] == 'v0.1.0'
 
 def test_index_not_allowed_post():
     resp = client.post(app.reverse_uri("health"))
