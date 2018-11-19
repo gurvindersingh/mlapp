@@ -72,6 +72,8 @@ Application uses `config.json` to provide various options.
 
 Prometheus + Grafana
 
+![alt text](figures/grafana.png "Prometheus Metrics Dashboard")
+
 ## Deployment
 
 Kubernetes
