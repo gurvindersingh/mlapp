@@ -18,16 +18,28 @@ So that I can focus on my ML model improvment and don't need to bother about how
 
 ## Design
 
-Application design is very simple. `app.py` sets up the route and required methods to get data in and out. `app.py` validates data according to schema descibed in `model.py` file using Molten framework. This application provides a simple CNN model which was described in Lesson 1 of [Fast v1](https://github.com/fastai/fastai/) course.
+Application design is simple. `app.py` set up the routes and required methods to get data in and out. Following routes are exposed by application.
 
 ```
-/                   -> Returns health information and serve as liveness check for application
-/_docs              -> Serves Swagger UI to provide API docs and user friendly API testing
-/_schema            -> json formatted API spec in OpenAPI standard
-/metrics            -> Endpoint to scrape metrics by Prometheus
-/v1alpha1/predict   -> Receives end user data to make prediction on
-/v1alpha1/feedback  -> User can provide feedback on prediction if there was any errors
+/               -> Returns health information and serve as liveness check for application
+/_docs          -> Serves Swagger UI to provide API docs and user friendly API testing
+/_schema        -> json formatted API spec in OpenAPI standard
+/metrics        -> Endpoint to scrape metrics by Prometheus
+/v1/predict     -> Receives end user data to make prediction on
+/v1/feedback    -> User can provide feedback on prediction if there was any errors
 ```
+
+API is **versioned** which makes evolution of system possible without introducing any breaking changes to downstream applications. `app.py` **validates data** according to schema descibed in `model.py` file using Molten framework. The current application provides a simple CNN model which was described in Lesson 1 of [Fast v1](https://github.com/fastai/fastai/) course using schema shown below for `predict` endpoint.
+
+```python
+@schema
+class ModelData():
+    file: UploadedFile
+```
+
+Idea is that based on your model you can update the schema in this class and let Molten take care of validation for you and provide a user friendly docs and interface to test as shown.
+![alt text](figures/swagger-docs.png "Swagger Docs UI")
+
 
 versions + model schema + config
 
