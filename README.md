@@ -17,6 +17,38 @@ I wanted to have an application which allow me to serve ML models in real produc
 
 So that I can focus on my ML model improvment and don't need to bother about how to serve the model in produciton.
 
+## Testing
+
+To test the current model, just run the following commands
+
+### Virtualenv
+
+Run the following commands to set things up. You will need to have python 3.6 or above.
+
+```bash
+git clone --depth 1 https://github.com/gurvindersingh/mlapp.git
+virtualenv .ve
+source .ve/bin/activate
+pip install -r requirements.txt
+pip install torch_nightly -f https://download.pytorch.org/whl/nightly/cpu/torch_nightly.html
+gunicorn app:app
+```
+
+Now you can visit [localhost:8000](http://localhost:8000/_docs) to see Swagger UI and test APIs out. Or you can run `curl` as
+
+```bash
+curl -X POST "http://localhost:8000/v1/predict" -F "file=@loadtest/keeshond.jpg"
+```
+
+ You can change the `config.json` based on your own model, classes and architecture to see predictions from your own model. Make sure to have your `.pth` located with correct name under `models` directory.
+
+### Docker
+
+```bash
+CPU: docker run -ti --rm -p 8000:8000 gurvin/mlapp:v0.1.0-cpu
+GPU & CPU: docker run -ti --rm -p 8000:8000 gurvin/mlapp:v0.1.0
+```
+
 ## Design
 
 Application design is simple. `app.py` set up the routes and required methods to get data in and out. Following routes are exposed by application.
@@ -42,11 +74,7 @@ Idea is that based on a given model, you can update the schema in this class and
 
 ![alt text](figures/swagger-docs.png "Swagger Docs UI")
 
-To test API either using `curl` or swagger UI can be used
-
-```bash
-curl -X POST "http://localhost:8000/v1/predict" -F "file=@keeshond.jpg"
-```
+To test API either using `curl` or swagger UI can be used.
 
 ![alt text](figures/predict-ui.png "Predict Test")
 
