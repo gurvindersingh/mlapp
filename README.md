@@ -54,7 +54,7 @@ curl -X POST "http://localhost:8000/v1/predict" -F "file=@keeshond.jpg"
 
 Application uses `config.json` to provide various options.
 
-```json
+```raw
 {
     "model_name": "v1",     -> Specify the model from multiple models in your config as which one you want to run with this instance
     "token": "",            -> To enable authenticaiton to you APIs
