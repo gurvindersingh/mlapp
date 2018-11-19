@@ -1,1 +1,7 @@
 .ve
+.vscode
+__pycache__
+.pytest.cache
+loadtest
+feedback
+deployment
