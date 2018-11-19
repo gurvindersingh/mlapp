@@ -1,6 +1,6 @@
 # MLapp
 
-A web application to serve model based on Fastai v1 library. Application is based on [Molten Framework](https://moltenframework.com/) due to it's inbuild support for modern tooling: [Swagger](https://swagger.io/), [OpenAPI](https://www.openapis.org/), [Prometheus](https://prometheus.io/) etc.
+A web application to serve model based on Fastai v1 library. Application is built on [Molten Framework](https://moltenframework.com/) due to it's inbuilt support for modern tooling: [Swagger](https://swagger.io/), [OpenAPI](https://www.openapis.org/), [Prometheus](https://prometheus.io/) etc.
 
 ## Motivation
 
@@ -13,7 +13,7 @@ I wanted to have an application which allow me to serve ML models in real produc
 * Input data validation
 * Authentication
 * Inference device flexibility (CPU or GPU)
-* Scale up or down instances based on incoming traffic
+* Scale up or down instances based on incoming traffic (Kubernetes)
 
 So that I can focus on my ML model improvment and don't need to bother about how to serve the model in produciton.
 
