@@ -10,7 +10,7 @@ RUN apt update && apt install -y gcc && \
 
 COPY *.py config.json /app/
 COPY --chown=65534 models models
-RUN mkdir -m 777 /nonexistent
+RUN mkdir -m 777 /nonexistent /app/feedback
 USER nobody
 ENTRYPOINT [ "gunicorn", "app:app", "--access-logfile", "-", "--error-logfile", "-" ]
-CMD [ "-k", "gthread",  "-t", "60", "--workers", "1", "--threads", "2" "-b", "0.0.0.0" ]
+CMD [ "-k", "gthread",  "-t", "60", "--workers", "1", "--threads", "2", "-b", "0.0.0.0" ]
