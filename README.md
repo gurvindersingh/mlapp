@@ -49,6 +49,24 @@ CPU: docker run -ti --rm -p 8000:8000 gurvin/mlapp:v0.1.0-cpu
 GPU & CPU: docker run -ti --rm -p 8000:8000 gurvin/mlapp:v0.1.0
 ```
 
+## Configuration
+
+Application uses `config.json` to provide various options.
+
+```raw
+{
+    "model_name": "v1",     -> Specify the model from multiple models in your config as which one you want to run with this instance
+    "token": "",            -> To enable authenticaiton to you APIs
+    "v1": {                 -> Model name and its corresponding config. These can be different based on your model
+        "device": "cpu",    -> Device on which to run inference (cpu, cuda)
+        "url": "",          -> URL to fetch the weights file .pth from. If empty app assumes local file under models dir
+        "arch": "resnet34", -> Model Architecutre
+        "size": 224,        -> Image size
+        "classes": []       -> Classes used during training from which prediciton will happen
+    }
+}
+```
+
 ## Design
 
 Application design is simple. `app.py` set up the routes and required methods to get data in and out. Following routes are exposed by application.
@@ -77,24 +95,6 @@ Idea is that based on a given model, you can update the schema in this class and
 To test API either using `curl` or swagger UI can be used.
 
 ![alt text](figures/predict-ui.png "Predict Test")
-
-## Configuration
-
-Application uses `config.json` to provide various options.
-
-```raw
-{
-    "model_name": "v1",     -> Specify the model from multiple models in your config as which one you want to run with this instance
-    "token": "",            -> To enable authenticaiton to you APIs
-    "v1": {                 -> Model name and its corresponding config. These can be different based on your model
-        "device": "cpu",    -> Device on which to run inference (cpu, cuda)
-        "url": "",          -> URL to fetch the weights file .pth from. If empty app assumes local file under models dir
-        "arch": "resnet34", -> Model Architecutre
-        "size": 224,        -> Image size
-        "classes": []       -> Classes used during training from which prediciton will happen
-    }
-}
-```
 
 ## Metrics
 
