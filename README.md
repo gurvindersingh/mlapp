@@ -70,14 +70,13 @@ Application uses `config.json` to provide various options.
 
 ## Metrics
 
-Prometheus + Grafana
+Application uses Molten support for [Prometheus](https://prometheus.io/) to export request count, latency, GC Time and few other metrics.
 
 ![alt text](figures/grafana.png "Prometheus Metrics Dashboard")
 
 ## Deployment
 
-Kubernetes
-traffic shifting etc
+[Kubernetes](https://kubernetes.io/) deployment file is provided in `deployment` folder which also have support for [HorizontalPodAutoscalar](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) to scale the application based on CPU usage and later scale down when not needed.
 
 ## Load testing
 
