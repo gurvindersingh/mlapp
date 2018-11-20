@@ -27,6 +27,7 @@ Run the following commands to set things up. You will need to have python 3.6 or
 
 ```bash
 git clone --depth 1 https://github.com/gurvindersingh/mlapp.git
+cd mlapp
 virtualenv .ve
 source .ve/bin/activate
 pip install -r requirements.txt
