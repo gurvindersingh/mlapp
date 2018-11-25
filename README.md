@@ -23,7 +23,7 @@ To test the current model, just run the following commands
 
 ### Virtualenv
 
-Run the following commands to set things up. You will need to have python 3.6 or above.
+Run the following commands to set things up. You will need to have python 3.6 or above and `git-lfs` package installed.
 
 ```bash
 git clone --depth 1 https://github.com/gurvindersingh/mlapp.git
