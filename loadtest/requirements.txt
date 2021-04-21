@@ -41,7 +41,7 @@ plac==0.9.6
 pluggy==0.8.0
 preshed==2.0.1
 prometheus-client==0.4.2
-py==1.7.0
+py==1.10.0
 pylint==2.1.1
 pyparsing==2.3.0
 pytest==3.10.0
